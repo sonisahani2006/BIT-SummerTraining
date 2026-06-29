@@ -36,8 +36,10 @@ def grade_student(marks):
         print("Grade A")
     elif marks >= 75:
         print("Grade B")
-    elif marks >= 50:
+    elif marks >= 60:
         print("Grade C")
+    elif marks >= 40:
+        print("Grade D")
     else:
         print("Grade F")
 
