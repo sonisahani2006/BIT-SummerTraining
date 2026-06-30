@@ -1,27 +1,25 @@
-# Day 4 Assignment 
+# Day 4 Assignment - Python Data Structures
 
 # Question 1: List Append
-
 students = ['Aman', 'Priya', 'Shalu', 'Raj', 'Ansh']
 students.append('Vivek')
 print(students)
 
 # Question 2: Tuple Indexing
-
-cities = ('Mumbai', 'Pune', 'Delhi', 'Noida', 'Agra')
+cities = ('Mumbai', 'Lucknow', 'Delhi', 'Pune', 'Jaipur')
 print(cities[2])
 
 # Question 3: Set Add
-courses = {'Python', 'SQL', 'Machine Learning', 'Data Analytics'}
-courses.add('AI')
+courses = {"Python", "SQL", "Machine Learning", "Data Analytics"}
+courses.add("AI")
 print(sorted(courses))
 
 # Question 4: Dictionary Access
 student = {
-    'name': 'Rahul',
-    'course': 'Python Data AI',
-    'batch': 'B',
-    'city': 'Lucknow'
+    "name": "Rahul",
+    "course": "Python Data AI",
+    "batch": "B",
+    "city": "Varanasi"
 }
 print(f"Name: {student['name']}")
 print(f"Course: {student['course']}")
@@ -40,15 +38,15 @@ print(word_count)
 
 # Question 7: Nested Student Dictionary
 student_info = {
-    'name': 'Neha',
-    'marks': {'python': 85, 'data': 90},
-    'skills': ['Python', 'SQL']
+    "name": "Neha",
+    "marks": {"python": 85, "data": 90},
+    "skills": ["Python", "SQL"]
 }
-student_info['skills'].append('Pandas')
+student_info["skills"].append("Pandas")
 print(student_info)
 
 # Question 8: Common Elements
 python_students = {"Aman", "Priya", "Raj", "Neha"}
 ai_students = {"Raj", "Neha", "Vivek", "Shalu"}
-common_students = python_students & ai_students
-print(sorted(common_students))
+common = python_students & ai_students
+print(sorted(common))
