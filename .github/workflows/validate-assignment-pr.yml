@@ -19,6 +19,11 @@ jobs:
           ref: ${{ github.event.pull_request.base.sha }}
           path: trusted-validator
 
+      - name: Check out the proposed submission
+        uses: actions/checkout@v4
+        with:
+          path: submission
+
       - name: Collect changed paths
         env:
           GH_TOKEN: ${{ github.token }}
@@ -29,14 +34,22 @@ jobs:
             --jq '.[].filename' > "${RUNNER_TEMP}/changed-files.txt"
 
       - name: Validate assignment structure
+        env:
+          HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
         run: |
-          python3 trusted-validator/scripts/validate_assignment_pr.py \
+          validator="trusted-validator/scripts/validate_assignment_pr.py"
+          if [[ ! -f "${validator}" ]]; then
+            if [[ "${HEAD_REPOSITORY}" == "${GITHUB_REPOSITORY}" && \
+                  "${GITHUB_ACTOR}" == "${REPOSITORY_OWNER}" ]]; then
+              validator="submission/scripts/validate_assignment_pr.py"
+            else
+              echo "::error::The trusted assignment validator is missing from the base branch."
+              exit 1
+            fi
+          fi
+          python3 "${validator}" \
             --paths-file "${RUNNER_TEMP}/changed-files.txt"
-
-      - name: Check out the proposed submission
-        uses: actions/checkout@v4
-        with:
-          path: submission
 
       - name: Compile Python solutions without executing them
         run: |
