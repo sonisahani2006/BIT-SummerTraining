@@ -3,9 +3,11 @@ import io
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 from scripts.audit_open_prs import (
+    _gh_api,
     build_audit_rows,
     main,
     merge_existing_review,
@@ -14,6 +16,22 @@ from scripts.audit_open_prs import (
 
 
 class AuditOpenPullRequestsTests(unittest.TestCase):
+    def test_github_api_retries_a_transient_connection_failure(self):
+        failure = SimpleNamespace(
+            returncode=1, stdout="", stderr="read: connection reset by peer"
+        )
+        success = SimpleNamespace(
+            returncode=0, stdout='[[{"number": 7}]]', stderr=""
+        )
+
+        with patch(
+            "scripts.audit_open_prs.subprocess.run", side_effect=[failure, success]
+        ) as run:
+            response = _gh_api("repos/example/repo/pulls")
+
+        self.assertEqual([{"number": 7}], response)
+        self.assertEqual(2, run.call_count)
+
     def test_builds_a_review_row_for_a_valid_pull_request(self):
         pull_requests = [
             {

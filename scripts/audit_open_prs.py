@@ -127,14 +127,19 @@ def write_audit(rows: Iterable[Mapping[str, object]], output: TextIO) -> None:
 
 
 def _gh_api(endpoint: str) -> List[dict]:
-    result = subprocess.run(
-        ["gh", "api", "--paginate", "--slurp", endpoint],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    if result.returncode:
-        raise RuntimeError(result.stderr.strip() or "GitHub API request failed.")
+    result = None
+    for _attempt in range(3):
+        result = subprocess.run(
+            ["gh", "api", "--paginate", "--slurp", "--cache", "15m", endpoint],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode == 0:
+            break
+    if result is None or result.returncode:
+        message = result.stderr.strip() if result is not None else ""
+        raise RuntimeError(message or "GitHub API request failed after 3 attempts.")
 
     pages = json.loads(result.stdout)
     if pages and all(isinstance(page, list) for page in pages):
