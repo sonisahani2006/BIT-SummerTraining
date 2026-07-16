@@ -26,6 +26,8 @@ plt.close()
 
 
 
+
+
 # Question 2: Bar Chart(Create a bar chart of courses and students.)
 # Title: Students by Course
 # X-axis label: Course
@@ -41,6 +43,7 @@ plt.ylabel("Students")
 plt.savefig("students_by_course_bar.png")
 plt.show()
 plt.close()
+
 
 
 # Question 3: Pie Chart(Create a pie chart of courses and students.)
@@ -60,6 +63,8 @@ plt.title("Course Enrollment Share")
 plt.savefig("course_enrollment_pie.png")
 plt.show()
 plt.close()
+
+
 
 
 # Question 4: Scatter Plot(Use these values to create a scatter plot:)
@@ -138,5 +143,9 @@ plt.close()
 ## Among all charts, the bar chart is best for comparing 
 ##courses as it clearly displays the highest
 ## and lowest number of students in each course.
+
+
+
+
 
 
